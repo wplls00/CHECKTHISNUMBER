@@ -56,7 +56,7 @@ function preprocessCanvas(canvas) {
       .resizeNearestNeighbor([28, 28]) // Уменьшаем до 28x28 пикселей
       .toFloat()
       .div(255.0) // Нормализуем значения пикселей к диапазону [0, 1]
-      .expandDims(0); // Добавляем размерность batch (форма [1, 28, 28, 1])
+      .reshape([28, 28, 1]); // Форма [28, 28, 1] (без батч-измерения)
     
     return tensor;
   });
@@ -71,7 +71,7 @@ predictButton.addEventListener('click', async () => {
 
   // Получаем предсказание
   const imageTensor = preprocessCanvas(canvas);
-  const prediction = await model.predict(imageTensor).data();
+  const prediction = await model.predict(imageTensor.expandDims(0)).data(); // Добавляем батч-измерение только для predict
   const result = prediction.indexOf(Math.max(...prediction)); // Находим наиболее вероятную цифру
   resultSpan.textContent = result; // Показываем результат
 });
