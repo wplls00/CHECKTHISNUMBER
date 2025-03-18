@@ -1,11 +1,3 @@
-// Очищаем canvas белым цветом
-function clearCanvas() {
-  ctx.fillStyle = '#FFFFFF'; // Белый фон
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-}
-
-// Очищаем canvas при загрузке страницы
-clearCanvas();
 // Получаем элементы страницы
 const canvas = document.getElementById('drawing-canvas');
 const ctx = canvas.getContext('2d');
@@ -14,6 +6,15 @@ const resultSpan = document.getElementById('result');
 const statusSpan = document.getElementById('status');
 
 let isDrawing = false;
+
+// Очищаем canvas белым цветом
+function clearCanvas() {
+  ctx.fillStyle = '#FFFFFF'; // Белый фон
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+// Очищаем canvas при загрузке страницы
+clearCanvas();
 
 // Обработчики событий для рисования
 canvas.addEventListener('mousedown', () => isDrawing = true);
@@ -28,11 +29,6 @@ function draw(event) {
 
   ctx.fillStyle = '#000000'; // Чёрный цвет
   ctx.fillRect(x, y, 15, 15); // Рисуем квадраты размером 15x15
-}
-
-// Очистка canvas
-function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 // Загружаем модель как Graph Model
