@@ -32,7 +32,7 @@ let model;
 (async function loadModel() {
   try {
     const modelUrl = './web_model/model.json'; // Убедитесь, что путь правильный
-    model = await tf.loadGraphModel(modelUrl);
+    model = await tf.loadLayersModel(modelUrl);
     console.log('Модель успешно загружена!');
     statusSpan.textContent = 'Модель загружена! Можно рисовать.';
   } catch (error) {
