@@ -56,7 +56,8 @@ function preprocessCanvas(canvas) {
       .resizeNearestNeighbor([28, 28]) // Уменьшаем до 28x28 пикселей
       .toFloat()
       .div(255.0) // Нормализуем значения пикселей к диапазону [0, 1]
-      .expandDims(0); // Добавляем размерность batch (форма [1, 28, 28])
+      .expandDims(0); // Добавляем размерность batch (форма [1, 28, 28, 1])
+    
     return tensor;
   });
 }
