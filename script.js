@@ -1,3 +1,11 @@
+// Очищаем canvas белым цветом
+function clearCanvas() {
+  ctx.fillStyle = '#FFFFFF'; // Белый фон
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+// Очищаем canvas при загрузке страницы
+clearCanvas();
 // Получаем элементы страницы
 const canvas = document.getElementById('drawing-canvas');
 const ctx = canvas.getContext('2d');
@@ -18,8 +26,8 @@ function draw(event) {
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
 
-  ctx.fillStyle = 'black';
-  ctx.fillRect(x, y, 10, 10); // Рисуем квадраты размером 10x10
+  ctx.fillStyle = '#000000'; // Чёрный цвет
+  ctx.fillRect(x, y, 15, 15); // Рисуем квадраты размером 15x15
 }
 
 // Очистка canvas
@@ -43,13 +51,18 @@ let model;
 
 // Предобработка изображения
 function preprocessCanvas(canvas) {
+  // Получаем данные из canvas
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const tensor = tf.browser.fromPixels(imageData)
-    .resizeNearestNeighbor([28, 28]) // Уменьшаем до 28x28 пикселей
-    .mean(2) // Преобразуем в градации серого
-    .toFloat()
-    .expandDims(0); // Добавляем размерность batch (форма [1, 28, 28])
-  return tensor.div(255.0); // Нормализуем значения пикселей
+  
+  // Преобразуем в тензор TensorFlow.js
+  return tf.tidy(() => {
+    let tensor = tf.browser.fromPixels(imageData, 1) // Градации серого (1 канал)
+      .resizeNearestNeighbor([28, 28]) // Уменьшаем до 28x28 пикселей
+      .toFloat()
+      .div(255.0) // Нормализуем значения пикселей к диапазону [0, 1]
+      .expandDims(0); // Добавляем размерность batch (форма [1, 28, 28])
+    return tensor;
+  });
 }
 
 // Кнопка "Распознать"
